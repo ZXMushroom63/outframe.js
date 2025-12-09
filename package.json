@@ -1,0 +1,23 @@
+{
+  "name": "outframe",
+  "version": "1.0.0",
+  "description": "JavaScript and TypeScript library for an easy solution to expanding your websites across multiple monitors / windows",
+  "keywords": [
+    "windowing",
+    "browser"
+  ],
+  "homepage": "https://github.com/ZXMushroom63/outframe.js#readme",
+  "bugs": {
+    "url": "https://github.com/ZXMushroom63/outframe.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZXMushroom63/outframe.js.git"
+  },
+  "license": "GPL-3.0",
+  "author": "ZXMushroom63",
+  "type": "module",
+  "main": "src/index.mjs",
+  "scripts": {
+  }
+}
