@@ -90,7 +90,7 @@ export function outframe(targetElement, opts) {
         ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset"].forEach(name => {
             if (cssSnapshot.has(name)) {
                 //  no support for css variables
-                return response.placeholder.style.setProperty(name, computedStyle.getPropertyValue(name), computedStyle.getPropertyPriority(name));
+                return response.placeholder.style.setProperty(name, cssSnapshot.getPropertyValue(name), cssSnapshot.getPropertyPriority(name));
             }
         });
         response.placeholder.style.backgroundColor = "";
