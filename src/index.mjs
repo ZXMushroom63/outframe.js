@@ -86,16 +86,21 @@ export function outframe(targetElement, opts) {
     if (opts.createPlaceholder) {
         const cssSnapshot = targetElement.computedStyleMap();
         response.placeholder = document.createElement("div");
-        response.placeholder.style = "all:initial !important";
-        ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset"].forEach(name => {
+        response.placeholder.style.all = "initial !important";
+        ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset",
+            "padding", "padding-left", "padding-top", "padding-right", "padding-bottom",
+            "margin", "margin-left", "margin-top", "margin-right", "margin-bottom"
+        ].forEach(name => {
+
             if (cssSnapshot.has(name)) {
                 //  no support for css variables
-                return response.placeholder.style[name] = cssSnapshot.get(name).toString() + " !important";
+                debugger;
+                response.placeholder.style.setProperty(name, cssSnapshot.get(name).toString(), 'important');
             }
         });
         response.placeholder.style.backgroundColor = "";
         response.placeholder.style.backgroundImage = "";
-        response.placeholder.style.background = opts.placeholderBackground + " !important";
+        response.placeholder.style.setProperty("background", opts.placeholderBackground, "important");
         targetElement.before(response.placeholder);
     } else {
         response.placeholder = document.createElement("outframe-placeholder");
