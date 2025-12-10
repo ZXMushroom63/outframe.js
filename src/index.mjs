@@ -89,7 +89,8 @@ export function outframe(targetElement, opts) {
         response.placeholder.style = "all:initial !important";
         ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset"].forEach(name => {
             if (cssSnapshot.has(name)) {
-                response.placeholder.style.width = cssSnapshot.get(name) + " !important";
+                //  no support for css variables
+                return response.placeholder.style.setProperty(name, computedStyle.getPropertyValue(name), computedStyle.getPropertyPriority(name));
             }
         });
         response.placeholder.style.backgroundColor = "";
@@ -166,7 +167,6 @@ export function outframe(targetElement, opts) {
             if (key.startsWith("on")) {
                 const type = key.slice(2);
                 frame.addEventListener(type, event => {
-                    console.log(`Forwarding ${type} event.`);
                     const clone = new CustomEvent(type, {
                         bubbles: event.bubbles,
                         cancelable: event.cancelable,
@@ -186,7 +186,6 @@ export function outframe(targetElement, opts) {
                     window.dispatchEvent(clone);
                 });
                 frame.document.addEventListener(type, event => {
-                    console.log(`Forwarding ${type} event.`);
                     const clone = new CustomEvent(type, {
                         bubbles: event.bubbles,
                         cancelable: event.cancelable,
