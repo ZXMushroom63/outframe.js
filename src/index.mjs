@@ -156,12 +156,25 @@ export function outframe(targetElement, opts) {
     if (opts.forwardEvents) {
         Object.keys(frame).forEach(key => {
             if (key.startsWith("on")) {
-                frame.addEventListener(key.slice(2), event => {
-                    console.log(`Forwarding ${key.slice(2)} event.`);
-                    (new Promise((res,rej)=>{
-                        window.dispatchEvent(event);
-                        res();
-                    }));
+                const type = key.slice(2);
+                frame.addEventListener(type, event => {
+                    console.log(`Forwarding ${type} event.`);
+                    const clone = new CustomEvent(type, {
+                        bubbles: originalEvent.bubbles,
+                        cancelable: originalEvent.cancelable,
+                        detail: {
+                            original: originalEvent,
+                        }
+                    });
+                    for (let prop in event) {
+                        let descriptor = Object.getOwnPropertyDescriptor(event, prop);
+                        if (descriptor && (descriptor.get || descriptor.set)) {
+                            Object.defineProperty(clone, prop, descriptor);
+                        } else {
+                            clone[prop] = e[prop]
+                        };
+                    }
+                    window.dispatchEvent(clone);
                 });
             }
         });
