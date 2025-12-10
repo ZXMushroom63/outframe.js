@@ -52,6 +52,7 @@ export function getOutframeDocuments() {
 * @param {number} [opts.width=] width of the new window. uses `targetElement`'s width if unspecified.
 * @param {number} [opts.height=] height of the new window. uses `targetElement`'s height if unspecified.
 * @param {boolean} [opts.forwardEvents=true] whether or not to forward frame events to the main window. defaults to 'true'
+* @param {boolean} [opts.readOnly=false] whether or not to disable user interaction in the popout. defaults to 'false'
 * @returns {OutframeResponse} object containing information about the framing
 */
 export function outframe(targetElement, opts) {
@@ -69,6 +70,7 @@ export function outframe(targetElement, opts) {
     opts.createPlaceholder ||= false;
     opts.placeholderBackground ??= "rgba(0,0,0,0.5)";
     opts.forwardEvents ??= true;
+    opts.readOnly ||= false;
 
     if (!('width' in opts) || !('height' in opts)) {
         const rect = targetElement.getBoundingClientRect();
@@ -108,6 +110,12 @@ export function outframe(targetElement, opts) {
         <base href="${location.href}">
     </head>
     <style>
+    ${opts.readOnly ? `
+        * {
+            pointer-events: none;
+            user-select: none;
+        }
+        `: ""}
     html, body {
         margin: 0 !important;
         padding: 0! important;
@@ -153,7 +161,7 @@ export function outframe(targetElement, opts) {
     }
     response.document = frame.document;
     outframedDocuments.add(response.document);
-    if (opts.forwardEvents) {
+    if (opts.forwardEvents && !opts.readOnly) {
         Object.keys(frame).forEach(key => {
             if (key.startsWith("on")) {
                 const type = key.slice(2);

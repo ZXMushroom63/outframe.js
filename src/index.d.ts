@@ -57,6 +57,11 @@ export interface OutframeOptions {
      * @param {boolean} [opts.forwardEvents=true] whether or not to forward frame events to the main window. defaults to 'true'
      */
     forwardEvents?: boolean;
+    
+    /**
+     * @param {boolean} [opts.readOnly=false] whether or not to disable user interaction in the popout. defaults to 'false'
+     */
+    readOnly?: boolean;
 }
 
 
