@@ -158,7 +158,10 @@ export function outframe(targetElement, opts) {
             if (key.startsWith("on")) {
                 frame.addEventListener(key.slice(2), event => {
                     console.log(`Forwarding ${key.slice(2)} event.`);
-                    window.dispatchEvent(event);
+                    (new Promise((res,rej)=>{
+                        window.dispatchEvent(event);
+                        res();
+                    }));
                 });
             }
         });
