@@ -94,7 +94,6 @@ export function outframe(targetElement, opts) {
 
             if (cssSnapshot.has(name)) {
                 //  no support for css variables
-                debugger;
                 response.placeholder.style.setProperty(name, cssSnapshot.get(name).toString(), 'important');
             }
         });
@@ -189,6 +188,26 @@ export function outframe(targetElement, opts) {
                         };
                     }
                     window.dispatchEvent(clone);
+
+                    if (event.target !== frame) {
+                        const clone2 = new CustomEvent(type, {
+                            bubbles: event.bubbles,
+                            cancelable: event.cancelable,
+                            detail: event.detail
+                        });
+                        for (let prop in event) {
+                            if (prop === "isTrusted") {
+                                continue;
+                            }
+                            let descriptor = Object.getOwnPropertyDescriptor(event, prop);
+                            if (descriptor && (descriptor.get || descriptor.set)) {
+                                Object.defineProperty(clone2, prop, descriptor);
+                            } else {
+                                clone2[prop] = event[prop];
+                            };
+                        }
+                        response.placeholder.dispatchEvent(clone2);
+                    }
                 });
                 frame.document.addEventListener(type, event => {
                     const clone = new CustomEvent(type, {
