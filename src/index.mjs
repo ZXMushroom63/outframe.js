@@ -160,11 +160,9 @@ export function outframe(targetElement, opts) {
                 frame.addEventListener(type, event => {
                     console.log(`Forwarding ${type} event.`);
                     const clone = new CustomEvent(type, {
-                        bubbles: originalEvent.bubbles,
-                        cancelable: originalEvent.cancelable,
-                        detail: {
-                            original: originalEvent,
-                        }
+                        bubbles: event.bubbles,
+                        cancelable: event.cancelable,
+                        detail: event.detail
                     });
                     for (let prop in event) {
                         let descriptor = Object.getOwnPropertyDescriptor(event, prop);
