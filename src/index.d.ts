@@ -59,6 +59,7 @@ export interface OutframeOptions {
     forwardEvents?: boolean;
 }
 
+
 /**
 * Move a container element to a new window. Should be called after a user interaction (eg: click event)
 * @param {HTMLElement} targetElement the target element to move to a new window
@@ -66,3 +67,10 @@ export interface OutframeOptions {
 * @returns {OutframeResponse} object containing information about the framing
 */
 export function outframe(targetElement: HTMLElement, opts?: OutframeOptions): OutframeResponse;
+
+
+/**
+* Get an  array of external HTMLDocument objects used by outframe.
+* @returns {Array<HTMLDocument>} array of documents
+*/
+export function getOutframeDocuments(): Array<HTMLDocument>;

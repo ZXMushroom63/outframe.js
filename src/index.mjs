@@ -4,6 +4,8 @@
  */
 const outframedElements = new Set();
 
+const outframedDocuments = new Set();
+
 class OutframeResponse {
     constructor() {
         /**
@@ -30,6 +32,14 @@ class OutframeResponse {
          */
         this.document = null;
     }
+}
+
+/**
+* Get an  array of external HTMLDocument objects used by outframe.
+* @returns {Array<HTMLDocument>} array of documents
+*/
+export function getOutframeDocuments() {
+    return [...outframedDocuments];
 }
 
 /**
@@ -135,12 +145,14 @@ export function outframe(targetElement, opts) {
         }
 
         outframedElements.delete(targetElement);
+        outframedDocuments.de(response.document);
 
         if (response.onclose) {
             response.onclose(e);
         }
     }
     response.document = frame.document;
+    outframedDocuments.add(response.document);
     if (opts.forwardEvents) {
         Object.keys(frame).forEach(key => {
             if (key.startsWith("on")) {
