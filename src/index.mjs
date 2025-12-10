@@ -23,6 +23,12 @@ class OutframeResponse {
          * @type {Function|null}
          */
         this.onbeforeclose = null;
+
+        /**
+         * the temporary document. can be used to patch querySelector calls
+         * @type {HTMLDocument}
+         */
+        this.document = null;
     }
 }
 
@@ -133,5 +139,6 @@ export function outframe(targetElement, opts) {
             response.onclose(e);
         }
     }
+    response.document = frame.document;
     return response;
 }

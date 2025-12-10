@@ -18,6 +18,12 @@ class OutframeResponse {
      * @type {Function|null}
      */
     onbeforeclose: ((this: Window, ev: BeforeUnloadEvent) => any) | null;
+
+    /**
+     * the temporary document. can be used to patch querySelector calls
+     * @type {HTMLDocument}
+     */
+    document: HTMLDocument;
 }
 
 export interface OutframeOptions {
