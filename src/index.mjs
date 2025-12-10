@@ -41,7 +41,7 @@ class OutframeResponse {
 * @param {string} [opts.placeholderBackground="rgba(0,0,0,0.5)"] if `createPlaceholder` is `true`, this specifies the CSS `background` value to use. defaults to `rgba(0,0,0,0.5)`
 * @param {number} [opts.width=] width of the new window. uses `targetElement`'s width if unspecified.
 * @param {number} [opts.height=] height of the new window. uses `targetElement`'s height if unspecified.
-
+* @param {boolean} [opts.forwardEvents=true] whether or not to forward frame events to the main window. defaults to 'true'
 * @returns {OutframeResponse} object containing information about the framing
 */
 export function outframe(targetElement, opts) {
@@ -58,6 +58,7 @@ export function outframe(targetElement, opts) {
     opts.windowName ??= "Outframe.js Window";
     opts.createPlaceholder ||= false;
     opts.placeholderBackground ??= "rgba(0,0,0,0.5)";
+    opts.forwardEvents ??= true;
 
     if (!('width' in opts) || !('height' in opts)) {
         const rect = targetElement.getBoundingClientRect();
@@ -90,7 +91,7 @@ export function outframe(targetElement, opts) {
         targetElement.before(response.placeholder);
     }
     outframedElements.add(targetElement);
-    
+
     frame.document.documentElement.innerHTML = `
     <head>
         <title>Outframe.js Window</title>
@@ -134,11 +135,21 @@ export function outframe(targetElement, opts) {
         }
 
         outframedElements.delete(targetElement);
-        
+
         if (response.onclose) {
             response.onclose(e);
         }
     }
     response.document = frame.document;
+    if (opts.forwardEvents) {
+        Object.keys(frame).forEach(key => {
+            if (key.startsWith("on")) {
+                frame.addEventListener(key.slice(2), event => {
+                    console.log(`Forwarding ${key.slice(2)} event.`);
+                    window.dispatchEvent(event);
+                });
+            }
+        });
+    }
     return response;
 }

@@ -52,6 +52,11 @@ export interface OutframeOptions {
      * @param {number} [opts.height=] height of the new window. uses `targetElement`'s height if unspecified.
      */
     height?: number;
+
+    /**
+     * @param {boolean} [opts.forwardEvents=true] whether or not to forward frame events to the main window. defaults to 'true'
+     */
+    forwardEvents?: boolean;
 }
 
 /**
