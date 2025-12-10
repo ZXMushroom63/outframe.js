@@ -145,7 +145,7 @@ export function outframe(targetElement, opts) {
         }
 
         outframedElements.delete(targetElement);
-        outframedDocuments.de(response.document);
+        outframedDocuments.delete(response.document);
 
         if (response.onclose) {
             response.onclose(e);
