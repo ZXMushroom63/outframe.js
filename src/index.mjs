@@ -165,14 +165,37 @@ export function outframe(targetElement, opts) {
                         detail: event.detail
                     });
                     for (let prop in event) {
+                        if (prop === "isTrusted") {
+                            continue;
+                        }
                         let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                         if (descriptor && (descriptor.get || descriptor.set)) {
                             Object.defineProperty(clone, prop, descriptor);
                         } else {
-                            clone[prop] = e[prop]
+                            clone[prop] = event[prop];
                         };
                     }
                     window.dispatchEvent(clone);
+                });
+                frame.document.addEventListener(type, event => {
+                    console.log(`Forwarding ${type} event.`);
+                    const clone = new CustomEvent(type, {
+                        bubbles: event.bubbles,
+                        cancelable: event.cancelable,
+                        detail: event.detail
+                    });
+                    for (let prop in event) {
+                        if (prop === "isTrusted") {
+                            continue;
+                        }
+                        let descriptor = Object.getOwnPropertyDescriptor(event, prop);
+                        if (descriptor && (descriptor.get || descriptor.set)) {
+                            Object.defineProperty(clone, prop, descriptor);
+                        } else {
+                            clone[prop] = event[prop];
+                        };
+                    }
+                    document.dispatchEvent(clone);
                 });
             }
         });
