@@ -183,14 +183,20 @@ export function outframe(targetElement, opts) {
                         let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                         if (descriptor && (descriptor.get || descriptor.set)) {
                             Object.defineProperty(clone, prop, descriptor);
-                        } else if (descriptor.configurable) {
+                        } else if (descriptor && descriptor.configurable) {
                             Object.defineProperty(clone, prop, {
                                 value: event[prop],
                                 enumerable: descriptor.enumerable,
                                 configurable: true,
                                 writable: descriptor.writable
                             });
-                        };
+                        } else {
+                            try {
+                                clone[prop] = event[prop];
+                            } catch (error) {
+                                // swallow
+                            }
+                        }
                     }
                     window.dispatchEvent(clone);
 
@@ -207,14 +213,20 @@ export function outframe(targetElement, opts) {
                             let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                             if (descriptor && (descriptor.get || descriptor.set)) {
                                 Object.defineProperty(clone2, prop, descriptor);
-                            } else if (descriptor.configurable) {
+                            } else if (descriptor && descriptor.configurable) {
                                 Object.defineProperty(clone2, prop, {
                                     value: event[prop],
                                     enumerable: descriptor.enumerable,
                                     configurable: true,
                                     writable: descriptor.writable
                                 });
-                            };
+                            } else {
+                                try {
+                                    clone2[prop] = event[prop];
+                                } catch (error) {
+                                    // swallow
+                                }
+                            }
                         }
                         response.placeholder.dispatchEvent(clone2);
                     }
@@ -232,14 +244,20 @@ export function outframe(targetElement, opts) {
                         let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                         if (descriptor && (descriptor.get || descriptor.set)) {
                             Object.defineProperty(clone, prop, descriptor);
-                        } else if (descriptor.configurable) {
+                        } else if (descriptor && descriptor.configurable) {
                             Object.defineProperty(clone, prop, {
                                 value: event[prop],
                                 enumerable: descriptor.enumerable,
                                 configurable: true,
                                 writable: descriptor.writable
                             });
-                        };
+                        } else {
+                            try {
+                                clone[prop] = event[prop];
+                            } catch (error) {
+                                // swallow
+                            }
+                        }
                     }
                     document.dispatchEvent(clone);
                 });
