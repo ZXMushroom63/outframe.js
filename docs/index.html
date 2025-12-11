@@ -15,6 +15,8 @@
             font-family: sans-serif;
             border-radius: 12px;
             padding: 4px;
+            font-size: 1rem;
+            outline: transparent;
         }
 
         .value {
@@ -37,17 +39,76 @@
             color: limegreen;
         }
 
+        samp {
+            font-size: 1rem;
+            margin-top: 6px;
+            display: inline-block;
+            background: black;
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        #out_mouse {
+            margin-bottom: 2rem;
+        }
+
         #opts {
             display: block;
             background: black;
             color: white;
             padding: 12px;
             border-radius: 4px;
+            font-size: 1rem;
+            width: calc(100vw - 6rem);
+            user-select: none;
+        }
+
+        #trigger {
+            border-radius: 4px;
+            background: black;
+            border: 0;
+            outline: transparent;
+            color: white;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 1rem;
+            padding: 10px;
+            margin-top: 6px;
+            user-select: none;
+            border: 2px solid white;
+        }
+        h2, p {
+            font-family: sans-serif;
+        }
+        body {
+            color: white;
+            padding: 1rem;
+        }
+        html {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 100vw;
+            min-height: 100vh;
+            background-repeat: no-repeat;
+            background: rgb(32, 32, 32);
+            background: linear-gradient(152deg,rgba(12, 53, 69, 1) 0%, rgba(7, 54, 26, 1) 50%, rgba(3, 64, 40, 1) 100%);
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 2rem;
+        }
+        p {
+            font-size: 1.25rem;
         }
     </style>
 </head>
 
 <body>
+    <h2>Outframe.js Demo</h2>
     <p>
         This is a demo for demonstrating how you can use outframe to pop out UI elements, such as textboxes, to a new
         window. This is great for accessibility on desktop devices.
@@ -57,7 +118,7 @@
     <samp id="opts">
     </samp>
     <button id="trigger">
-        outframe(textbox, opts);
+        outframe(textbox, opts);⠀<span class="comment">//&lt;-- click to run the demo</span>
     </button><br><br>
     <samp id="out_key">
         Last textbox 'keyup' event: (no value)
@@ -70,7 +131,7 @@
         const _options = {};
         const opts = document.querySelector("#opts");
         opts.innerHTML = "";
-        opts.innerText = "const opts = {\n";
+        opts.innerText = `import { outframe, getOutframeDocuments } from "https://unpkg.com/outframe@latest/src/index.mjs";\n\nconst opts = {\n`;
         const optionDefs = {
             "windowName": ["text", "Title of the window containing the outframe() target", "Outframe.js Window"],
             "createPlaceholder": ["bool", "Whether or not to create a placeholder element in place of the outframe() target", false],
