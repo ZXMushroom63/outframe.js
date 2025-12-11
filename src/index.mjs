@@ -183,8 +183,13 @@ export function outframe(targetElement, opts) {
                         let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                         if (descriptor && (descriptor.get || descriptor.set)) {
                             Object.defineProperty(clone, prop, descriptor);
-                        } else {
-                            clone[prop] = event[prop];
+                        } else if (descriptor.configurable) {
+                            Object.defineProperty(clone, prop, {
+                                value: event[prop],
+                                enumerable: descriptor.enumerable,
+                                configurable: true,
+                                writable: descriptor.writable
+                            });
                         };
                     }
                     window.dispatchEvent(clone);
@@ -202,8 +207,13 @@ export function outframe(targetElement, opts) {
                             let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                             if (descriptor && (descriptor.get || descriptor.set)) {
                                 Object.defineProperty(clone2, prop, descriptor);
-                            } else {
-                                clone2[prop] = event[prop];
+                            } else if (descriptor.configurable) {
+                                Object.defineProperty(clone2, prop, {
+                                    value: event[prop],
+                                    enumerable: descriptor.enumerable,
+                                    configurable: true,
+                                    writable: descriptor.writable
+                                });
                             };
                         }
                         response.placeholder.dispatchEvent(clone2);
@@ -222,8 +232,13 @@ export function outframe(targetElement, opts) {
                         let descriptor = Object.getOwnPropertyDescriptor(event, prop);
                         if (descriptor && (descriptor.get || descriptor.set)) {
                             Object.defineProperty(clone, prop, descriptor);
-                        } else {
-                            clone[prop] = event[prop];
+                        } else if (descriptor.configurable) {
+                            Object.defineProperty(clone, prop, {
+                                value: event[prop],
+                                enumerable: descriptor.enumerable,
+                                configurable: true,
+                                writable: descriptor.writable
+                            });
                         };
                     }
                     document.dispatchEvent(clone);
