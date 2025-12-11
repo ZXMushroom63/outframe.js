@@ -61,9 +61,6 @@ export function outframe(targetElement, opts) {
     if (outframedElements.has(targetElement)) {
         throw new Error("Element is already outframed");
     }
-    if (!HTMLElement.prototype.moveBefore) {
-        throw new Error("Your browser does not support HTMLElement.moveBefore(); aborting...");
-    }
 
     const response = new OutframeResponse();
 
