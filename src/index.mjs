@@ -74,25 +74,24 @@ export function outframe(targetElement, opts) {
     opts.readOnly ||= false;
     opts.fixedSizing ||= false;
 
+    const rect = targetElement.getBoundingClientRect();
     if (!('width' in opts) || !('height' in opts)) {
-        const rect = targetElement.getBoundingClientRect();
         opts.width ??= rect.width;
         opts.height ??= rect.height;
     }
 
-    const frame = window.open("", "_blank", "menubar=no;toolbar=no;status=no;location=false;toolbar=false;popup=true;");
+    const frame = window.open("", `_blank", "menubar=false,status=false,location=false,toolbar=false,popup=true,width=${Math.max(100,Math.floor(opts.width || 100))},height=${Math.max(100,Math.floor(opts.height || 100))}`);
     if (!frame) {
         throw new Error("Failed to open new window.");
     }
 
     if (opts.createPlaceholder) {
         const cssSnapshot = targetElement.computedStyleMap();
-        const aabb = targetElement.getBoundingClientRect();
         response.placeholder = document.createElement("div");
         response.placeholder.style.all = "initial !important";
         if (opts.fixedSizing) {
-            response.placeholder.style.setProperty("width", aabb.width + "px", 'important');
-            response.placeholder.style.setProperty("height", aabb.height + "px", 'important');
+            response.placeholder.style.setProperty("width", rect.width + "px", 'important');
+            response.placeholder.style.setProperty("height", rect.height + "px", 'important');
             if (cssSnapshot.has("display")) {
                 response.placeholder.style.setProperty("display", cssSnapshot.get("display").toString(), 'important');
             }
