@@ -54,6 +54,7 @@ export function getOutframeDocuments() {
 * @param {number} [opts.height=] height of the new window. uses `targetElement`'s height if unspecified.
 * @param {boolean} [opts.forwardEvents=true] whether or not to forward frame events to the main window. defaults to 'true'
 * @param {boolean} [opts.readOnly=false] whether or not to disable user interaction in the popout. defaults to 'false'
+* @param {boolean} [opts.tabbed=false] use a new browser tab instead of a popup window
 * @returns {OutframeResponse} object containing information about the framing
 */
 export function outframe(targetElement, opts) {
@@ -73,6 +74,7 @@ export function outframe(targetElement, opts) {
     opts.forwardEvents ??= true;
     opts.readOnly ||= false;
     opts.fixedSizing ||= false;
+    opts.tabbed ||= false;
 
     const rect = targetElement.getBoundingClientRect();
     if (!('width' in opts) || !('height' in opts)) {
@@ -80,7 +82,7 @@ export function outframe(targetElement, opts) {
         opts.height ??= rect.height;
     }
 
-    const frame = window.open("", "_blank", `menubar=no;status=no;location=no;toolbar=no;popup=yes;width=${Math.max(100, Math.floor(opts.width || 100))};height=${Math.max(100, Math.floor(opts.height || 100))}`);
+    const frame = window.open("", "_blank", opts.tabbed ? "" : `menubar=no;status=no;location=no;toolbar=no;popup=yes;width=${Math.max(100, Math.floor(opts.width || 100))};height=${Math.max(100, Math.floor(opts.height || 100))}`);
     if (!frame) {
         throw new Error("Failed to open new window.");
     }

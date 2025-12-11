@@ -67,6 +67,11 @@ export interface OutframeOptions {
      * @param {boolean} [opts.readOnly=false] whether or not to disable user interaction in the popout. defaults to 'false'
      */
     readOnly?: boolean;
+
+    /**
+     * @param {boolean} [opts.tabbed=false] use a new browser tab instead of a popup window
+     */
+    tabbed?: boolean;
 }
 
 

@@ -139,7 +139,8 @@
             "fixedSizing": ["bool", "use a fixed bounding box size for the placeholder", false],
             "placeholderBackground": ["text", "The CSS value of 'background' for the placeholder element", "rgba(0,0,0,0.5)"],
             "forwardEvents": ["bool", "Whether or not to try to forward events from the outframe() window to the main window", true],
-            "readOnly": ["bool", "Whether or not to set 'pointer-events' to 'none' on the outframe() window", false]
+            "readOnly": ["bool", "Whether or not to set 'pointer-events' to 'none' on the outframe() window", false],
+            "tabbed": ["bool", "use a new browser tab instead of a popup window", false]
         };
         Object.entries(optionDefs).forEach(entry => {
             opts.append("⠀⠀⠀" + entry[0] + ":⠀");
