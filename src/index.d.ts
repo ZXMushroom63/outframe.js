@@ -72,6 +72,11 @@ export interface OutframeOptions {
      * @param {boolean} [opts.tabbed=false] use a new browser tab instead of a popup window
      */
     tabbed?: boolean;
+
+    /**
+     * @param {boolean} [opts.mobileBypass=false] whether to proceed on unsupported browsers
+     */
+    mobileBypass?: boolean;
 }
 
 

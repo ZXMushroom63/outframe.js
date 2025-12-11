@@ -55,6 +55,7 @@ export function getOutframeDocuments() {
 * @param {boolean} [opts.forwardEvents=true] whether or not to forward frame events to the main window. defaults to 'true'
 * @param {boolean} [opts.readOnly=false] whether or not to disable user interaction in the popout. defaults to 'false'
 * @param {boolean} [opts.tabbed=false] use a new browser tab instead of a popup window
+* @param {boolean} [opts.mobileBypass=false] whether to proceed on unsupported browsers
 * @returns {OutframeResponse} object containing information about the framing
 */
 export function outframe(targetElement, opts) {
@@ -72,6 +73,11 @@ export function outframe(targetElement, opts) {
     opts.readOnly ||= false;
     opts.fixedSizing ||= false;
     opts.tabbed ||= false;
+    opts.mobileBypass ||= false;
+
+    if (navigator?.userAgentData?.mobile && !opts.mobileBypass) {
+        throw new Error("Mobile devices are not supported!");
+    }
 
     const rect = targetElement.getBoundingClientRect();
     if (!('width' in opts) || !('height' in opts)) {

@@ -80,13 +80,17 @@
             user-select: none;
             border: 2px solid white;
         }
-        h2, p {
+
+        h2,
+        p {
             font-family: sans-serif;
         }
+
         body {
             color: white;
             padding: 1rem;
         }
+
         html {
             margin: 0;
             padding: 0;
@@ -96,14 +100,22 @@
             min-height: 100vh;
             background-repeat: no-repeat;
             background: rgb(32, 32, 32);
-            background: linear-gradient(152deg,rgba(12, 53, 69, 1) 0%, rgba(7, 54, 26, 1) 50%, rgba(3, 64, 40, 1) 100%);
+            background: linear-gradient(152deg, rgba(12, 53, 69, 1) 0%, rgba(7, 54, 26, 1) 50%, rgba(3, 64, 40, 1) 100%);
         }
+
         h2 {
             margin-top: 0;
             font-size: 2rem;
         }
+
         p {
             font-size: 1.25rem;
+        }
+
+        warn {
+            text-decoration: underline;
+            text-decoration-color: orange;
+            color: lightsalmon;
         }
     </style>
 </head>
@@ -112,7 +124,8 @@
     <h2>Outframe.js Demo</h2>
     <p>
         This is a demo for demonstrating how you can use outframe to pop out UI elements, such as textboxes, to a new
-        window. This is great for accessibility on desktop devices.
+        window. This is great for accessibility and user experience on desktop devices.<br><br>
+        <warn>Note: Mobile browsers are not supported due to incompatabilities in event handling.</warn>
     </p><br>
     <textarea id="textbox">
     </textarea><br><br><br>
@@ -140,7 +153,8 @@
             "placeholderBackground": ["text", "The CSS value of 'background' for the placeholder element", "rgba(0,0,0,0.5)"],
             "forwardEvents": ["bool", "Whether or not to try to forward events from the outframe() window to the main window", true],
             "readOnly": ["bool", "Whether or not to set 'pointer-events' to 'none' on the outframe() window", false],
-            "tabbed": ["bool", "use a new browser tab instead of a popup window", false]
+            "tabbed": ["bool", "use a new browser tab instead of a popup window", false],
+            "mobileBypass": ["bool", "whether to proceed on unsupported browsers", false]
         };
         Object.entries(optionDefs).forEach(entry => {
             opts.append("⠀⠀⠀" + entry[0] + ":⠀");
@@ -201,10 +215,10 @@
             outframe(textbox, opts);
         });
 
-        textbox.addEventListener("keyup", (e)=>{
+        textbox.addEventListener("keyup", (e) => {
             keybOut.innerText = `Last textbox 'keyup' event: ${new Date()}`;
         });
-        addEventListener("mousedown", (e)=>{
+        addEventListener("mousedown", (e) => {
             mouseOut.innerText = `Last window 'mousedown' event: ${new Date()}`;
         });
     </script>
