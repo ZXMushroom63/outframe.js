@@ -2,7 +2,7 @@ declare class OutframeResponse {
     constructor();
 
     /**
-     * the placeholder element
+     * the placeholder element used in place of the target element.
      * @type {HTMLElement}
      */
     placeholder: HTMLElement;
