@@ -93,6 +93,9 @@ export function outframe(targetElement, opts) {
         if (opts.fixedSizing) {
             response.placeholder.style.setProperty("width", aabb.width + "px", 'important');
             response.placeholder.style.setProperty("height", aabb.height + "px", 'important');
+            if (cssSnapshot.has("display")) {
+                response.placeholder.style.setProperty("display", cssSnapshot.get("display").toString(), 'important');
+            }
         } else {
             ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset",
                 "padding", "padding-left", "padding-top", "padding-right", "padding-bottom",
