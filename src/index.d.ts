@@ -1,4 +1,4 @@
-class OutframeResponse {
+declare class OutframeResponse {
     constructor();
 
     /**
