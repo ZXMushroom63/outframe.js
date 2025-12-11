@@ -1,5 +1,5 @@
 # outframe.js
-JavaScript/TypeScript library for an easy solution to expanding your websites across multiple monitors / windows
+JavaScript/TypeScript library for an easy solution to expanding your websites across multiple monitors / windows.
 <img src=screenshot.png width=300>
 
 
@@ -12,4 +12,4 @@ None needed, no dependencies either. All code is in [src/index.mjs](src/index.mj
 
 
 ## Usage
-todo
+[here](docs/usage.md)
