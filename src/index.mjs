@@ -48,6 +48,7 @@ export function getOutframeDocuments() {
 * @param {Object} [opts=] options for outframe.js
 * @param {string} [opts.windowName="Outframe.js Window"] the title of the window containing the new element. defaults to `Outframe.js Window`
 * @param {boolean} [opts.createPlaceholder=false] create a placeholder element with same stylesheet size? defaults to `false`
+* @param {boolean} [opts.fixedSizing=false] use a fixed bounding box size for the placeholder? defaults to `false`
 * @param {string} [opts.placeholderBackground="rgba(0,0,0,0.5)"] if `createPlaceholder` is `true`, this specifies the CSS `background` value to use. defaults to `rgba(0,0,0,0.5)`
 * @param {number} [opts.width=] width of the new window. uses `targetElement`'s width if unspecified.
 * @param {number} [opts.height=] height of the new window. uses `targetElement`'s height if unspecified.
@@ -71,6 +72,7 @@ export function outframe(targetElement, opts) {
     opts.placeholderBackground ??= "rgba(0,0,0,0.5)";
     opts.forwardEvents ??= true;
     opts.readOnly ||= false;
+    opts.fixedSizing ||= false;
 
     if (!('width' in opts) || !('height' in opts)) {
         const rect = targetElement.getBoundingClientRect();
@@ -85,18 +87,24 @@ export function outframe(targetElement, opts) {
 
     if (opts.createPlaceholder) {
         const cssSnapshot = targetElement.computedStyleMap();
+        const aabb = targetElement.getBoundingClientRect();
         response.placeholder = document.createElement("div");
         response.placeholder.style.all = "initial !important";
-        ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset",
-            "padding", "padding-left", "padding-top", "padding-right", "padding-bottom",
-            "margin", "margin-left", "margin-top", "margin-right", "margin-bottom"
-        ].forEach(name => {
+        if (opts.fixedSizing) {
+            response.placeholder.style.setProperty("width", aabb.width + "px", 'important');
+            response.placeholder.style.setProperty("height", aabb.height + "px", 'important');
+        } else {
+            ["width", "height", "display", "max-width", "max-height", "min-width", "min-height", "position", "z-index", "transform", "top", "left", "bottom", "right", "inset",
+                "padding", "padding-left", "padding-top", "padding-right", "padding-bottom",
+                "margin", "margin-left", "margin-top", "margin-right", "margin-bottom"
+            ].forEach(name => {
 
-            if (cssSnapshot.has(name)) {
-                //  no support for css variables
-                response.placeholder.style.setProperty(name, cssSnapshot.get(name).toString(), 'important');
-            }
-        });
+                if (cssSnapshot.has(name)) {
+                    //  no support for css variables
+                    response.placeholder.style.setProperty(name, cssSnapshot.get(name).toString(), 'important');
+                }
+            });
+        }
         response.placeholder.style.backgroundColor = "";
         response.placeholder.style.backgroundImage = "";
         response.placeholder.style.setProperty("background", opts.placeholderBackground, "important");

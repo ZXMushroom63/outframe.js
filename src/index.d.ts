@@ -39,6 +39,11 @@ export interface OutframeOptions {
     createPlaceholder?: boolean;
 
     /**
+     * @param {boolean} [opts.fixedSizing=false] use a fixed bounding box size for the placeholder? defaults to `false`
+     */
+    fixedSizing?: boolean;
+
+    /**
      * @param {string} [opts.placeholderBackground="rgba(0,0,0,0.5)"] if `createPlaceholder` is `true`, this specifies the CSS `background` value to use. defaults to `rgba(0,0,0,0.5)`
      */
     placeholderBackground?: string;
