@@ -80,7 +80,7 @@ export function outframe(targetElement, opts) {
         opts.height ??= rect.height;
     }
 
-    const frame = window.open("", `_blank", "menubar=false,status=false,location=false,toolbar=false,popup=true,width=${Math.max(100,Math.floor(opts.width || 100))},height=${Math.max(100,Math.floor(opts.height || 100))}`);
+    const frame = window.open("", "_blank", `menubar=no;status=no;location=no;toolbar=no;popup=yes;width=${Math.max(100,Math.floor(opts.width || 100))};height=${Math.max(100,Math.floor(opts.height || 100))}`);
     if (!frame) {
         throw new Error("Failed to open new window.");
     }
