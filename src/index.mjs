@@ -128,8 +128,8 @@ export function outframe(targetElement, opts) {
         height: 100vh !important;
     }
     body>* {
-        width: 100vw !important;
-        height: 100vw !important;
+        width: 100% !important;
+        height: 100% !important;
     }
     </style>
     <body>
