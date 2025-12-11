@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outframe.js Demo</title>
+    <style>
+        textarea {
+            background: white;
+            color: rgb(32, 32, 32);
+            min-width: 120px;
+            min-height: 70px;
+            border: 2px solid grey;
+            font-family: sans-serif;
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .value {
+            font-family: monospace;
+            border: 0;
+            background: transparent;
+            color: lightseagreen;
+            outline: transparent;
+            width: auto;
+        }
+
+        ins {
+            text-decoration: none;
+            color: orange;
+            cursor: pointer;
+        }
+
+        .comment {
+            display: inline;
+            color: limegreen;
+        }
+
+        #opts {
+            display: block;
+            background: black;
+            color: white;
+            padding: 12px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        This is a demo for demonstrating how you can use outframe to pop out UI elements, such as textboxes, to a new
+        window. This is great for accessibility on desktop devices.
+    </p><br>
+    <textarea id="textbox">
+    </textarea><br><br><br>
+    <samp id="opts">
+    </samp>
+    <button id="trigger">
+        outframe(textbox, opts);
+    </button><br><br>
+    <samp id="out_key">
+        Last textbox 'keyup' event: (no value)
+    </samp><br>
+    <samp id="out_mouse">
+        Last window 'mousedown' event: (no value)
+    </samp>
+    <script>
+        // setup options object
+        const _options = {};
+        const opts = document.querySelector("#opts");
+        opts.innerHTML = "";
+        opts.innerText = "const opts = {\n";
+        const optionDefs = {
+            "windowName": ["text", "Title of the window containing the outframe() target", "Outframe.js Window"],
+            "createPlaceholder": ["bool", "Whether or not to create a placeholder element in place of the outframe() target", false],
+            "fixedSizing": ["bool", "use a fixed bounding box size for the placeholder", false],
+            "placeholderBackground": ["text", "The CSS value of 'background' for the placeholder element", "rgba(0,0,0,0.5)"],
+            "forwardEvents": ["bool", "Whether or not to try to forward events from the outframe() window to the main window", true],
+            "readOnly": ["bool", "Whether or not to set 'pointer-events' to 'none' on the outframe() window", false]
+        };
+        Object.entries(optionDefs).forEach(entry => {
+            opts.append("⠀⠀⠀" + entry[0] + ":⠀");
+            _options[entry[0]] = entry[1][2];
+            if (entry[1][0] === "bool") {
+                const value = document.createElement("ins");
+                value.innerText = entry[1][2];
+                value.addEventListener("click", () => {
+                    if (_options[entry[0]]) {
+                        value.innerText = _options[entry[0]] = false;
+                    } else {
+                        value.innerText = _options[entry[0]] = true;
+                    }
+                });
+                opts.appendChild(value);
+            } else {
+                const value = document.createElement("span");
+                value.classList.add("value");
+                value.contentEditable = true;
+                value.spellcheck = false;
+                value.autocorrect = false;
+                value.autocapitalize = false;
+                value.innerText = _options[entry[0]];
+                value.addEventListener("input", (e) => {
+                    const patched = value.innerText.replaceAll("\\", "").replaceAll("\"", "").replaceAll("\n", "");
+                    if (patched !== value.innerText) {
+                        value.innerText = patched;
+                    }
+                    _options[entry[0]] = patched;
+                });
+                opts.append("\"");
+                opts.appendChild(value);
+                opts.append("\"");
+            }
+            opts.append(",⠀");
+            const comment = document.createElement("span");
+            comment.classList.add("comment");
+            comment.innerText = "//" + entry[1][1];
+            opts.append(comment);
+            opts.append(document.createElement("br"));
+        });
+        opts.append("};");
+
+        function getOpts() {
+            return _options;
+        }
+    </script>
+    <script type="module">
+        import { outframe, getOutframeDocuments } from "https://unpkg.com/outframe@latest/src/index.mjs";
+
+        const keybOut = document.querySelector("#out_key");
+        const mouseOut = document.querySelector("#out_mouse");
+        const textbox = document.querySelector("#textbox");
+        textbox.value = "This is the target text box."
+
+        document.querySelector("#trigger").addEventListener("click", () => {
+            const opts = getOpts();
+            outframe(textbox, opts);
+        });
+
+        textbox.addEventListener("keyup", (e)=>{
+            keybOut.innerText = `Last textbox 'keyup' event: ${new Date()}`;
+        });
+        addEventListener("mousedown", (e)=>{
+            mouseOut.innerText = `Last window 'mousedown' event: ${new Date()}`;
+        });
+    </script>
+</body>
+
+</html>
