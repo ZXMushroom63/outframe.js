@@ -1,6 +1,6 @@
 {
   "name": "outframe",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JavaScript and TypeScript library for an easy solution to expanding your websites across multiple monitors / windows",
   "keywords": [
     "windowing",
